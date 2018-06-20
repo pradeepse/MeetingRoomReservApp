@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MeetingRoomResvDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="MeetingRoomResvDBModelStoreContainer">
+    <EntitySet Name="Employee" EntityType="MeetingRoomResvDBModel.Store.Employee" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Location" EntityType="MeetingRoomResvDBModel.Store.Location" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MeetingRoom" EntityType="MeetingRoomResvDBModel.Store.MeetingRoom" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MeetRoomReserved" EntityType="MeetingRoomResvDBModel.Store.MeetRoomReserved" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK__MeetingRo__Locat__08EA5793" Association="MeetingRoomResvDBModel.Store.FK__MeetingRo__Locat__08EA5793">
+      <End Role="Location" EntitySet="Location" />
+      <End Role="MeetingRoom" EntitySet="MeetingRoom" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetRoomR__EmpID__108B795B" Association="MeetingRoomResvDBModel.Store.FK__MeetRoomR__EmpID__108B795B">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserved" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetRoomR__Locat__0F975522" Association="MeetingRoomResvDBModel.Store.FK__MeetRoomR__Locat__0F975522">
+      <End Role="Location" EntitySet="Location" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserved" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetRoomR__RoomI__0EA330E9" Association="MeetingRoomResvDBModel.Store.FK__MeetRoomR__RoomI__0EA330E9">
+      <End Role="MeetingRoom" EntitySet="MeetingRoom" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserved" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="LocationID" />
+    </Key>
+    <Property Name="LocationID" Type="int" Nullable="false" />
+    <Property Name="LocationName" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="MeetingRoom">
+    <Key>
+      <PropertyRef Name="RoomID" />
+    </Key>
+    <Property Name="RoomID" Type="int" Nullable="false" />
+    <Property Name="RoomName" Type="varchar" MaxLength="40" />
+    <Property Name="LocationID" Type="int" />
+    <Property Name="NoofAttendees" Type="int" />
+  </EntityType>
+  <EntityType Name="MeetRoomReserved">
+    <Key>
+      <PropertyRef Name="ResvID" />
+    </Key>
+    <Property Name="ResvID" Type="int" Nullable="false" />
+    <Property Name="RoomID" Type="int" />
+    <Property Name="LocationID" Type="int" />
+    <Property Name="FromDate" Type="datetime" />
+    <Property Name="ToDate" Type="datetime" />
+    <Property Name="EmpID" Type="int" />
+  </EntityType>
+  <Association Name="FK__MeetingRo__Locat__08EA5793">
+    <End Role="Location" Type="MeetingRoomResvDBModel.Store.Location" Multiplicity="0..1" />
+    <End Role="MeetingRoom" Type="MeetingRoomResvDBModel.Store.MeetingRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="LocationID" />
+      </Principal>
+      <Dependent Role="MeetingRoom">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetRoomR__EmpID__108B795B">
+    <End Role="Employee" Type="MeetingRoomResvDBModel.Store.Employee" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.Store.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmpID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="EmpID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetRoomR__Locat__0F975522">
+    <End Role="Location" Type="MeetingRoomResvDBModel.Store.Location" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.Store.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="LocationID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetRoomR__RoomI__0EA330E9">
+    <End Role="MeetingRoom" Type="MeetingRoomResvDBModel.Store.MeetingRoom" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.Store.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MeetingRoom">
+        <PropertyRef Name="RoomID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="RoomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="usp_GetMeetingRoomReserv" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="EmpID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_MeetingRoomFinder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="EmpID" Type="int" Mode="In" />
+    <Parameter Name="LocationID" Type="int" Mode="In" />
+    <Parameter Name="RoomName" Type="varchar" Mode="In" />
+    <Parameter Name="FromDate" Type="datetime" Mode="In" />
+    <Parameter Name="ToDate" Type="datetime" Mode="In" />
+    <Parameter Name="NoAttendees" Type="int" Mode="In" />
+  </Function>
+</Schema>

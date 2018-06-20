@@ -1,0 +1,24 @@
+﻿@model MeetingRoomReservApp.Models.userdefMeetingRoom
+@using GridMvc  
+@{
+    ViewBag.Title = "MeetingRoom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Meeting Room Inquiry for Employee</h2>
+                
+@using (Html.BeginForm("MeetingPost", "MeetingRoom", FormMethod.Post))
+{
+
+@Html.Label("Employee ID :")
+@Html.TextBoxFor(model => model.EmpID)
+
+
+ <input type="submit" value="Check" />
+    
+}
+
+@Html.ActionLink("Meeting Room Finder", "MeetingRoomFinder")
+
+
+

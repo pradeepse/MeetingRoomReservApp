@@ -1,0 +1,29 @@
+﻿@model MeetingRoomReservApp.Models.userdefMeetingRoom
+
+@{
+    ViewBag.Title = "MeetingRoomFinder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MeetingRoomFinder</h2>
+
+@using (Html.BeginForm("MeetingRoomFinderPost", "MeetingRoom", FormMethod.Post))
+{
+
+@Html.Label("Employee ID :")
+@Html.TextBoxFor(model => model.EmpID)
+
+@Html.Label("Location :")
+@Html.DropDownListFor(model => model.SelectLocation , Model.LocationList, "Select Location")
+
+@Html.Label("From Date :")
+@Html.TextBoxFor(model => model.FromDate)
+
+@Html.Label("To Date :")
+@Html.TextBoxFor(model => model.ToDate)
+
+@Html.Label("No. of Attendees :")
+@Html.TextBoxFor(model => model.NoofAttendees)
+
+ <input type="submit" value="Submit" />
+}

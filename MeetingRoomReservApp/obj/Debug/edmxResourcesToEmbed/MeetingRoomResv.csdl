@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MeetingRoomResvDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MeetingRoomResvDBEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="MeetingRoomResvDBModel.Employee" />
+    <EntitySet Name="Locations" EntityType="MeetingRoomResvDBModel.Location" />
+    <EntitySet Name="MeetingRooms" EntityType="MeetingRoomResvDBModel.MeetingRoom" />
+    <EntitySet Name="MeetRoomReserveds" EntityType="MeetingRoomResvDBModel.MeetRoomReserved" />
+    <AssociationSet Name="FK__MeetRoomR__EmpID__108B795B" Association="MeetingRoomResvDBModel.FK__MeetRoomR__EmpID__108B795B">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserveds" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetingRo__Locat__08EA5793" Association="MeetingRoomResvDBModel.FK__MeetingRo__Locat__08EA5793">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="MeetingRoom" EntitySet="MeetingRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetRoomR__Locat__0F975522" Association="MeetingRoomResvDBModel.FK__MeetRoomR__Locat__0F975522">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserveds" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MeetRoomR__RoomI__0EA330E9" Association="MeetingRoomResvDBModel.FK__MeetRoomR__RoomI__0EA330E9">
+      <End Role="MeetingRoom" EntitySet="MeetingRooms" />
+      <End Role="MeetRoomReserved" EntitySet="MeetRoomReserveds" />
+    </AssociationSet>
+    <FunctionImport Name="usp_GetMeetingRoomReserv" ReturnType="Collection(MeetingRoomResvDBModel.usp_GetMeetingRoomReserv_Result1)">
+      <Parameter Name="EmpID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="usp_MeetingRoomFinder" ReturnType="Collection(MeetingRoomResvDBModel.usp_MeetingRoomFinder_Result)">
+      <Parameter Name="EmpID" Mode="In" Type="Int32" />
+      <Parameter Name="LocationID" Mode="In" Type="Int32" />
+      <Parameter Name="RoomName" Mode="In" Type="String" />
+      <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+      <Parameter Name="NoAttendees" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Password" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="MeetRoomReserveds" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__EmpID__108B795B" FromRole="Employee" ToRole="MeetRoomReserved" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="LocationID" />
+    </Key>
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="LocationName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="MeetingRooms" Relationship="MeetingRoomResvDBModel.FK__MeetingRo__Locat__08EA5793" FromRole="Location" ToRole="MeetingRoom" />
+    <NavigationProperty Name="MeetRoomReserveds" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__Locat__0F975522" FromRole="Location" ToRole="MeetRoomReserved" />
+  </EntityType>
+  <EntityType Name="MeetingRoom">
+    <Key>
+      <PropertyRef Name="RoomID" />
+    </Key>
+    <Property Name="RoomID" Type="Int32" Nullable="false" />
+    <Property Name="RoomName" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+    <Property Name="LocationID" Type="Int32" />
+    <Property Name="NoofAttendees" Type="Int32" />
+    <NavigationProperty Name="Location" Relationship="MeetingRoomResvDBModel.FK__MeetingRo__Locat__08EA5793" FromRole="MeetingRoom" ToRole="Location" />
+    <NavigationProperty Name="MeetRoomReserveds" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__RoomI__0EA330E9" FromRole="MeetingRoom" ToRole="MeetRoomReserved" />
+  </EntityType>
+  <EntityType Name="MeetRoomReserved">
+    <Key>
+      <PropertyRef Name="ResvID" />
+    </Key>
+    <Property Name="ResvID" Type="Int32" Nullable="false" />
+    <Property Name="RoomID" Type="Int32" />
+    <Property Name="LocationID" Type="Int32" />
+    <Property Name="FromDate" Type="DateTime" Precision="3" />
+    <Property Name="ToDate" Type="DateTime" Precision="3" />
+    <Property Name="EmpID" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__EmpID__108B795B" FromRole="MeetRoomReserved" ToRole="Employee" />
+    <NavigationProperty Name="Location" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__Locat__0F975522" FromRole="MeetRoomReserved" ToRole="Location" />
+    <NavigationProperty Name="MeetingRoom" Relationship="MeetingRoomResvDBModel.FK__MeetRoomR__RoomI__0EA330E9" FromRole="MeetRoomReserved" ToRole="MeetingRoom" />
+  </EntityType>
+  <Association Name="FK__MeetRoomR__EmpID__108B795B">
+    <End Role="Employee" Type="MeetingRoomResvDBModel.Employee" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmpID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="EmpID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetingRo__Locat__08EA5793">
+    <End Role="Location" Type="MeetingRoomResvDBModel.Location" Multiplicity="0..1" />
+    <End Role="MeetingRoom" Type="MeetingRoomResvDBModel.MeetingRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="LocationID" />
+      </Principal>
+      <Dependent Role="MeetingRoom">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetRoomR__Locat__0F975522">
+    <End Role="Location" Type="MeetingRoomResvDBModel.Location" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="LocationID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MeetRoomR__RoomI__0EA330E9">
+    <End Role="MeetingRoom" Type="MeetingRoomResvDBModel.MeetingRoom" Multiplicity="0..1" />
+    <End Role="MeetRoomReserved" Type="MeetingRoomResvDBModel.MeetRoomReserved" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MeetingRoom">
+        <PropertyRef Name="RoomID" />
+      </Principal>
+      <Dependent Role="MeetRoomReserved">
+        <PropertyRef Name="RoomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="usp_GetMeetingRoomReserv_Result">
+    <Property Type="String" Name="RoomName" Nullable="true" MaxLength="40" />
+    <Property Type="Int32" Name="ResvID" Nullable="false" />
+    <Property Type="Int32" Name="RoomID" Nullable="true" />
+    <Property Type="Int32" Name="LocationID" Nullable="true" />
+    <Property Type="DateTime" Name="FromDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="ToDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="EmpID" Nullable="true" />
+    <Property Type="Int32" Name="RoomID1" Nullable="false" />
+    <Property Type="String" Name="RoomName1" Nullable="true" MaxLength="40" />
+    <Property Type="Int32" Name="LocationID1" Nullable="true" />
+    <Property Type="Int32" Name="NoofAttendees" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="usp_GetMeetingRoomReserv_Result1">
+    <Property Type="String" Name="RoomName" Nullable="true" MaxLength="40" />
+    <Property Type="Int32" Name="ResvID" Nullable="false" />
+    <Property Type="Int32" Name="RoomID" Nullable="true" />
+    <Property Type="Int32" Name="LocationID" Nullable="true" />
+    <Property Type="DateTime" Name="FromDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="ToDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="EmpID" Nullable="true" />
+    <Property Type="Int32" Name="NoofAttendees" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="usp_MeetingRoomFinder_Result">
+    <Property Type="Int32" Name="ResvID" Nullable="true" />
+    <Property Type="Int32" Name="RoomID" Nullable="true" />
+    <Property Type="Int32" Name="LocationID" Nullable="true" />
+    <Property Type="DateTime" Name="FromDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="ToDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="EmpID" Nullable="true" />
+    <Property Type="String" Name="Status" Nullable="false" MaxLength="9" />
+  </ComplexType>
+</Schema>

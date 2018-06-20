@@ -1,0 +1,35 @@
+﻿@model IEnumerable<MeetingRoomReservApp.usp_GetMeetingRoomReserv_Result1>
+
+<h2>My Meeting Room Details for Employee</h2>
+<table class="table table-bordered">
+<thead>
+	  <tr>
+	      <th>Room ID</th>
+	      <th>Room Name</th>
+	      <th>Location ID</th>
+	      <th>From Date</th>
+	      <th>To Date</th>
+          <th>No. of Attendees</th>
+	  </tr>
+</thead>
+<tbody>
+	  @foreach (var item in @Model)
+	  {
+	      <tr>
+	          
+	          <td>@item.RoomID</td>
+	          <td>@item.RoomName</td>
+	          <td>@item.LocationID</td>
+              <td>@item.FromDate</td>
+              <td>@item.ToDate</td>
+              <td>@item.NoofAttendees</td>
+	          
+	      </tr> 
+	  }
+</tbody>
+</table>
+
+
+ 
+
+   
